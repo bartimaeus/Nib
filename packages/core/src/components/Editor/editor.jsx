@@ -10,7 +10,14 @@ import { usePMStateContext } from "../../context/pm-state";
 
 import { StyledEditor } from "./styles";
 
-const Editor = ({ defaultValue, autoFocus, spellCheck, addons, onChange }) => {
+const Editor = ({
+  defaultValue,
+  autoFocus,
+  spellCheck,
+  addons,
+  onBlur,
+  onChange
+}) => {
   const editorRef = useRef(null);
   const {
     config: { plugins },
@@ -51,7 +58,8 @@ const Editor = ({ defaultValue, autoFocus, spellCheck, addons, onChange }) => {
             serializableState[name] = getSerializableState();
         });
         if (onChange) onChange(serializableState);
-      }
+      },
+      props: { onBlur }
     });
     if (autoFocus) {
       view.focus();
@@ -82,6 +90,7 @@ Editor.propTypes = {
   autoFocus: PropTypes.bool,
   // eslint-disable-next-line react/forbid-prop-types
   defaultValue: PropTypes.object,
+  onBlur: PropTypes.func,
   onChange: PropTypes.func,
   spellCheck: PropTypes.bool,
   // eslint-disable-next-line react/forbid-prop-types
@@ -91,6 +100,7 @@ Editor.propTypes = {
 Editor.defaultProps = {
   autoFocus: false,
   defaultValue: undefined,
+  onBlur: () => {},
   onChange: () => {},
   spellCheck: false,
   addons: []
